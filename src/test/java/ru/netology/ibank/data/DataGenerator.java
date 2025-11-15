@@ -43,7 +43,7 @@ public class DataGenerator {
         return FAKER.internet().password();
     }
 
-    
+
     public static RegistrationDto getUser(String status) {
         return new RegistrationDto(
                 getRandomLogin(),
