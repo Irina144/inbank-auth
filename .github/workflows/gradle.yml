@@ -4,7 +4,6 @@ on: [push, pull_request]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -23,8 +22,7 @@ jobs:
       - name: Start SUT
         run: |
           java -Dspring.profiles.active=test -jar artifacts/app-ibank.jar &
-          sleep 8
-      
+          sleep 10
 
       - name: Run tests
         run: ./gradlew test -Dselenide.headless=true --info
