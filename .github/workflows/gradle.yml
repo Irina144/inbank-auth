@@ -16,13 +16,22 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
 
-      - name: Grant execute permissions for gradlew
+      - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
       - name: Start SUT
         run: |
-          java -Dspring.profiles.active=test -jar ./artifacts/app-ibank.jar &
-          sleep 15
+          # Запускаем SUT в фоне
+          nohup java -Dspring.profiles.active=test -jar ./artifacts/app-ibank.jar > sut.log 2>&1 &
+          # Ждём, пока SUT реально поднимется на 9999 порту
+          for i in {1..40}; do
+            if curl -s http://localhost:9999 > /dev/null; then
+              echo "SUT is up"
+              break
+            fi
+            echo "Waiting for SUT on port 9999..."
+            sleep 1
+          done
 
       - name: Run tests
-        run: ./gradlew clean test -Dselenide.headless=true --info
+        run: ./gradlew test -Dselenide.headless=true --info
