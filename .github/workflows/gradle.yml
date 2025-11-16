@@ -1,6 +1,8 @@
 name: Java CI with Gradle
 
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
 
 jobs:
   build:
@@ -22,7 +24,7 @@ jobs:
       - name: Start SUT
         run: |
           java -Dspring.profiles.active=test -jar artifacts/app-ibank.jar &
-          sleep 10
+          sleep 12   # время нужно, иначе SUT не успеет подняться
 
       - name: Run tests
-        run: ./gradlew test -Dselenide.headless=true --info
+        run: ./gradlew clean test -Dselenide.headless=true --info
