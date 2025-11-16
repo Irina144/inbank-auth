@@ -24,7 +24,7 @@ jobs:
       - name: Start SUT
         run: |
           java -Dspring.profiles.active=test -jar artifacts/app-ibank.jar &
-          sleep 12   # время нужно, иначе SUT не успеет подняться
+          sleep 12      # ждём запуск SUT – важно!
 
       - name: Run tests
         run: ./gradlew clean test -Dselenide.headless=true --info
